@@ -1,26 +1,65 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container column">
+    <app-form
+      @add="addBlock"
+      :options="options"
+    ></app-form>
+    <app-resume
+      :blocks="blocks"
+    ></app-resume>
+  </div>
+
+  <app-comments-block
+    :url="commentUrl"
+  ></app-comments-block>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import AppCommentsBlock from '@/components/AppCommentsBlock'
+import AppForm from '@/components/AppForm'
+import AppResume from '@/components/AppResume'
 
 export default {
-  name: 'App',
+  data() {
+    return {
+      commentUrl: 'https://jsonplaceholder.typicode.com/comments?_limit=42',
+      block: null,
+      value: '',
+      blocks: [],
+      options: [
+        {
+          type: 'title',
+          text: 'Заголовок'
+        },
+        {
+          type: 'subtitle',
+          text: 'Подзаголовок'
+        },
+        {
+          type: 'avatar',
+          text: 'Аватар'
+        },
+        {
+          type: 'text',
+          text: 'Текст'
+        }
+      ]
+    }
+  },
+  methods: {
+    addBlock(type, value) {
+      if (value.length > 3) {
+        this.blocks.push({type, value})
+      }
+      else {
+        console.log('Значение блока должно быть минимум 4 символа.')
+      }
+    }
+  },
   components: {
-    HelloWorld
+    AppCommentsBlock,
+    AppForm,
+    AppResume
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
